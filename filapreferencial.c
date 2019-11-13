@@ -108,22 +108,13 @@ bool atenderPrimeiraDaFila(PFILA f, int* id){
 	PONT apagar = f->cabeca->prox;
 	*id = apagar->id;
 
-	if(f->cabeca->prox != f->inicioNaoPref){
-	    f->cabeca->prox = f->cabeca->prox->prox;
-	    f->cabeca->prox->ant = f->cabeca;
-	    free(apagar);
-	    return true;
-	}
+	if(f->cabeca->prox == f->inicioNaoPref) f->inicioNaoPref = f->cabeca->prox->prox;	
 	
-	else if(f->cabeca->prox == f->inicioNaoPref){
-  	    f->cabeca->prox = f->cabeca->prox->prox;
-	    f->cabeca->prox->ant = f->cabeca;
-	    f->inicioNaoPref = f->cabeca->prox;
-	    free(apagar);
-	    return true;
-	}
+	f->cabeca->prox = f->cabeca->prox->prox;
+	f->cabeca->prox->ant = f->cabeca;
 
-	return false;
+	free(apagar);
+	return true;
 }
 
 
@@ -133,10 +124,10 @@ bool desistirDaFila(PFILA f, int id){
 	PONT desiste = buscarID(f, id);
 	if(!desiste) return false;
 
+        if(desiste == f->inicioNaoPref) f->inicioNaoPref = desiste->prox;
+
 	desiste->ant->prox = desiste->prox;
         desiste->prox->ant = desiste->ant;
-
-        if(desiste == f->inicioNaoPref) f->inicioNaoPref = desiste->prox;
 
         free(desiste);
         return true;
