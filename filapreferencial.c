@@ -133,5 +133,11 @@ bool desistirDaFila(PFILA f, int id){
 	PONT desiste = buscarID(f, id);
 	if(!desiste) return false;
 
-	return false;
+	desiste->ant->prox = desiste->prox;
+        desiste->prox->ant = desiste->ant;
+
+        if(desiste == f->inicioNaoPref) f->inicioNaoPref = desiste->prox;
+
+        free(desiste);
+        return true;
 }
